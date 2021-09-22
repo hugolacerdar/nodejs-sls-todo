@@ -28,7 +28,7 @@ functions:
     handler: src/functions/createTask.handle
     events:
       - http:
-          path: /tasks/{userId}
+          path: /tasks/{user_id}
           method: POST
           cors: true
 
@@ -44,10 +44,10 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
-          - AttributeName: userId
+          - AttributeName: user_id
             AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
-          - AttributeName: userId
+          - AttributeName: user_id
             KeyType: HASH
