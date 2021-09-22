@@ -25,11 +25,18 @@ provider:
 
 functions:
   createTask:
-    handler: src/functions/createTask.handle
+    handler: src/functions/createTask.handler
     events:
       - http:
           path: /tasks/{user_id}
           method: POST
+          cors: true
+  getTasksByUser:
+    handler: src/functions/getTasksByUser.handler
+    events:
+      - http:
+          path: /tasks/{user_id}
+          method: GET
           cors: true
 
 resources:
@@ -44,10 +51,6 @@ resources:
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
-          - AttributeName: user_id
-            AttributeType: S
         KeySchema:
           - AttributeName: id
-            KeyType: HASH
-          - AttributeName: user_id
             KeyType: HASH
