@@ -8,8 +8,8 @@ interface ICreateTask {
   deadline: Date;
 }
 
-export const handle: APIGatewayProxyHandler = async (event) => {
-  const { id: user_id } = event.pathParameters;
+export const handler: APIGatewayProxyHandler = async (event) => {
+  const { user_id } = event.pathParameters;
   const { title, deadline } = JSON.parse(event.body) as ICreateTask;
 
   const task = {
@@ -28,7 +28,7 @@ export const handle: APIGatewayProxyHandler = async (event) => {
     .promise();
 
   return {
-    statusCode: 200,
+    statusCode: 201,
     body: JSON.stringify({
       message: "OK",
     }),
