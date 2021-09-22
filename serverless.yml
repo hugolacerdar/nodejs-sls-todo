@@ -1,0 +1,53 @@
+service: sls-todo-api
+
+plugins:
+  - serverless-offline
+  - serverless-webpack
+  - serverless-dynamodb-local
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+  dynamodb:
+    stages:
+      - dev
+      - local
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  lambdaHashingVersion: "20201221"
+
+functions:
+  createTask:
+    handler: src/functions/createTask.handle
+    events:
+      - http:
+          path: /tasks/{userId}
+          method: POST
+          cors: true
+
+resources:
+  Resources:
+    dbUsersTasks:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: users_tasks
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: userId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: userId
+            KeyType: HASH
